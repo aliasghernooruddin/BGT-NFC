@@ -1,4 +1,4 @@
-  <ion-header>
+<ion-header>
   <ion-toolbar color="primary">
     <ion-title>
       <ion-buttons end>
@@ -12,10 +12,10 @@
 
 <ion-content padding>
   <ion-item>
-    <ion-label>ITS:</ion-label> 
+    <ion-label>ITS:</ion-label>
     <ion-input type="number" [(ngModel)]="id"></ion-input>
   </ion-item>
-  <ion-button (click)="clickMe('its')">Enter</ion-button> 
+  <ion-button (click)="clickMe('its')">Enter</ion-button>
   <ion-button *ngIf="showScan" (click)="addListenNFC()">Scan</ion-button>
   <h1 *ngIf="show">{{ userDetails['user']['name'] }} {{userDetails['user']['father_name'] }} </h1>
   <form (submit)="onSubmit()">

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ApisService } from '../../services/apis.service';
 import { Toast } from '@ionic-native/toast/ngx';
 import { NFC } from '@ionic-native/nfc';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -30,21 +31,24 @@ export class HomePage implements OnInit {
   constructor(private authService: AuthenticationService,
               private router: Router,
               private api: ApisService,
-              private toast: Toast) {
+              private toast: Toast,
+              private platform: Platform) {
 
-    NFC.enabled().then(() => {
+    this.platform.ready().then(() => {
+      NFC.enabled().then(() => {
         this.nfc = 'NFC ENABLED DEVICE';
         this.showScan = true;
       }).catch(() => {
         this.nfc = 'NFC NOT FOUND';
       })
+    });
   }
 
 
   addListenNFC() {
-    NFC.addTagDiscoveredListener(() => this.sesReadNFC()).subscribe(data => {
+    NFC.addTagDiscoveredListener(nfcEvent => this.sesReadNFC(nfcEvent.tag)).subscribe(data => {
       if (data && data.tag && data.tag.id) {
-        let tagId = NFC.bytesToHexString(data.tag.id);
+        const tagId = NFC.bytesToHexString(data.tag.id);
         if (tagId) {
           this.id = tagId;
           this.clickMe('rfid')
@@ -56,7 +60,7 @@ export class HomePage implements OnInit {
   }
 
 
-  sesReadNFC(): void {
+  sesReadNFC(data): void {
     this.toast.show('NFC WORKING', '5000', 'center').subscribe(
       toast => {
         console.log(toast);
