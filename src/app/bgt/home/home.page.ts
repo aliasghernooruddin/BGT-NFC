@@ -47,6 +47,7 @@ export class HomePage implements OnInit {
         const tagId = NFC.bytesToHexString(data.tag.id);
         if (tagId) {
           this.id = tagId;
+          this.clickMe('rfid')
         } else {
           this.toast.show('NFC_NOT_DETECTED', '5000', 'center').subscribe();
         }
@@ -64,8 +65,8 @@ export class HomePage implements OnInit {
   }
 
 
-  clickMe() {
-    this.type = 'its';
+  clickMe(paramType) {
+    this.type = paramType;
     this.api.getUserDetails(this.type, this.id)
       .subscribe(response => {
         if (response !== 'error') {
