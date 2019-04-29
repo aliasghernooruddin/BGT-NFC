@@ -1,4 +1,4 @@
-<ion-header>
+  <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
       <ion-buttons end>
@@ -11,14 +11,13 @@
 </ion-header>
 
 <ion-content padding>
-
   <ion-item>
-    <ion-label>ITS:</ion-label>
+    <ion-label>ITS:</ion-label> 
     <ion-input type="number" [(ngModel)]="id"></ion-input>
   </ion-item>
-<br><br><br><br>
+  <ion-button (click)="clickMe()">Enter</ion-button> 
+  <ion-button *ngIf="showScan" (click)="addListenNFC()">Scan</ion-button>
   <h1 *ngIf="show">{{ userDetails['user']['name'] }} {{userDetails['user']['father_name'] }} </h1>
-
   <form (submit)="onSubmit()">
     <ion-item>
       <ion-label>Event</ion-label>
@@ -33,10 +32,13 @@
       <ion-input type="text" [(ngModel)]="submitDetails.paymentDescription" name="description"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Amount*</ion-label>
+      <ion-label>Amount</ion-label>
       <ion-input required type="number" [(ngModel)]="submitDetails.paymentAmount" name="amount"></ion-input>
     </ion-item>
-    <ion-button fill="outline" type="submit">Submit</ion-button>
+    <ion-button fill="outline" [disabled]="hideSubmit" type="submit">Submit</ion-button>
   </form>
+  <br>
+  <br>
+  {{nfc}}
 
 </ion-content>

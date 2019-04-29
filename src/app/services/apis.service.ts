@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from "rxjs/operators";
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 
-const loginObjectUrl = 'https://qutbifinance.herokuapp.com/getAllUsers?api_key=eca1811f-10d0-4e53-a017-43d78f138792'
-const checkLoginUrl = 'https://qutbifinance.herokuapp.com/sessions/create?api_key=eca1811f-10d0-4e53-a017-43d78f138792'
-const getEventsUrl = 'https://qutbifinance.herokuapp.com/getAllEvents?api_key=eca1811f-10d0-4e53-a017-43d78f138792'
-const getUserDetailsUrl = 'https://qutbifinance.herokuapp.com/getAllMemberContribution?api_key=eca1811f-10d0-4e53-a017-43d78f138792'
-const sendDataUrl = 'https://qutbifinance.herokuapp.com/savePayment?api_key=eca1811f-10d0-4e53-a017-43d78f138792'
-const receiveDataUrl = 'https://qutbifinance.herokuapp.com/savePayment?api_key=eca1811f-10d0-4e53-a017-43d78f138792'
+const loginObjectUrl = 'https://qutbifinance.herokuapp.com/getAllUsers?api_key=eca1811f-10d0-4e53-a017-43d78f138792';
+const checkLoginUrl = 'https://qutbifinance.herokuapp.com/sessions/create?api_key=eca1811f-10d0-4e53-a017-43d78f138792';
+const getEventsUrl = 'https://qutbifinance.herokuapp.com/getAllEvents?api_key=eca1811f-10d0-4e53-a017-43d78f138792';
+const getUserDetailsUrl = 'https://qutbifinance.herokuapp.com/getAllMemberContribution?api_key=eca1811f-10d0-4e53-a017-43d78f138792';
+const sendDataUrl = 'https://qutbifinance.herokuapp.com/savePayment?api_key=eca1811f-10d0-4e53-a017-43d78f138792';
+const receiveDataUrl = 'https://qutbifinance.herokuapp.com/savePayment?api_key=eca1811f-10d0-4e53-a017-43d78f138792';
 
 
 @Injectable({
@@ -18,7 +18,7 @@ const receiveDataUrl = 'https://qutbifinance.herokuapp.com/savePayment?api_key=e
 
 
 export class ApisService {
-  parameters: {}
+  parameters: {};
 
   constructor(public http: HttpClient) { }
 
@@ -33,11 +33,11 @@ export class ApisService {
   }
 
 
-  postLoginObject(loginObject): Observable<Object> {
+  postLoginObject(loginObject): Observable<object> {
     return this.http.post(checkLoginUrl, loginObject, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
     }).pipe(map(data => {
-      return data
+      return data;
     }));
   }
 
@@ -53,35 +53,37 @@ export class ApisService {
   }
 
 
-  getUserDetails(apiType,id) {
-    if (apiType == 'rfid'){
-      this.parameters = {rfid:id}
+  getUserDetails(apiType, id) {
+    if (apiType === 'rfid') {
+      this.parameters = { rfid: id };
+    } else {
+      this.parameters = { its: id };
     }
-    else{
-      this.parameters = {its:id}
-    }
-    return this.http.get(getUserDetailsUrl,{ params: this.parameters}
-      ).pipe(map(data => {
-      return data
+    return this.http.get(getUserDetailsUrl, { params: this.parameters }
+    ).pipe(map(data => {
+      if (!data['user']) {
+        return 'error';
+      }
+      return data;
     }));
   }
 
 
-  sendData(sendersDetails): Observable<Object> {
-    console.log(sendersDetails)
+  sendData(sendersDetails): Observable<object> {
+    console.log(sendersDetails);
     return this.http.post(sendDataUrl, sendersDetails, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
     }).pipe(map(data => {
-      return data
+      return data;
     }));
   }
 
-  
-  receiveData(receiversDetails): Observable<Object> {
+
+  receiveData(receiversDetails): Observable<object> {
     return this.http.post(receiveDataUrl, receiversDetails, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
     }).pipe(map(data => {
-      return data
+      return data;
     }));
   }
 }
