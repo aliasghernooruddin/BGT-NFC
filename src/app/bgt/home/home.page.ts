@@ -74,6 +74,8 @@ export class HomePage implements OnInit {
           this.show = true;
           this.hideSubmit = false;
         } else {
+          this.show = false;
+          this.hideSubmit = true;
           this.toast.show('Data Not Found', '5000', 'center').subscribe(() => { });
         }
       }
