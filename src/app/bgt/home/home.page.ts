@@ -44,7 +44,7 @@ export class HomePage implements OnInit {
   addListenNFC() {
     NFC.addTagDiscoveredListener(() => this.sesReadNFC()).subscribe(data => {
       if (data && data.tag && data.tag.id) {
-        const tagId = NFC.bytesToHexString(data.tag.id);
+        let tagId = NFC.bytesToHexString(data.tag.id);
         if (tagId) {
           this.id = tagId;
           this.clickMe('rfid')
@@ -101,7 +101,7 @@ export class HomePage implements OnInit {
       paymentName: this.submitDetails.paymentName,
       paymentType: 'CASH',
       paymentDescription: this.submitDetails.paymentDescription,
-      destination: this.userDetails,
+      destination: this.userDetails.user,
       paymentAmount: this.submitDetails.paymentAmount,
       receivedBy: this.collectorsObject,
       timestamp: new Date().getTime(),
