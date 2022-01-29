@@ -1,0 +1,439 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title text-center>     
+      <h1 style="font-size: 32px; padding-right: 2rem;">Event Details</h1>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-spinner name="crescent" color="success" [hidden]="!showSpinner"></ion-spinner>
+    <div class="dashboardadmin" >
+      <div style="text-align:center"><h3>Event {{event.name}}</h3></div>
+      <ion-row>
+        <ion-col>
+          <ion-label position="floating" color="primary">Name</ion-label>
+          <ion-input type="text" clearInput [(ngModel)]="event.name"  required></ion-input>
+        </ion-col>
+      </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">No of Arrows</ion-label>
+          <ion-input type="number" clearInput [(ngModel)]="event.no_of_arrows"  required></ion-input>
+        </ion-col>
+          </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">No of Rounds</ion-label>
+          <ion-input type="number" clearInput [(ngModel)]="event.no_of_rounds"  required></ion-input>
+        </ion-col>
+          </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">No of Boards</ion-label>
+          <ion-input type="number" clearInput [(ngModel)]="event.no_of_boards"  required></ion-input>
+        </ion-col>
+          </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">No of Players in each Boards</ion-label>
+          <ion-input type="number" clearInput [(ngModel)]="event.no_of_player_in_board"  required></ion-input>
+        </ion-col>
+          </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">Description</ion-label>
+          <ion-input type="text" clearInput [(ngModel)]="event.description"  required></ion-input>
+        </ion-col>
+          </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label color="primary">Event Date</ion-label>
+          <ion-datetime clearInput [(ngModel)]="event.event_start_date"  required placeholder="Select Date">
+          </ion-datetime>
+        </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-label position="floating" color="primary">Event State</ion-label>
+              <ion-select [(ngModel)]="event.event_state" required [ngModelOptions]="{standalone: true}">
+                <ion-select-option value="READY">Ready</ion-select-option>
+                <ion-select-option value="STARTED">Started</ion-select-option>
+                <ion-select-option value="COMPLETED">Completed</ion-select-option>
+              </ion-select>  
+            </ion-col>
+          </ion-row>
+        <ion-row>
+          <ion-col>
+          <ion-button shape="round" color="success" expand="block" (click)="updateEvent()" >Update Event
+          </ion-button>
+         </ion-col>
+          </ion-row>
+    </div>
+    <br />
+    <br />
+    <ion-button shape="round" color="danger" expand="block" (click)="newEventCategory = true"  >Event Categories
+    </ion-button>
+    <ion-button shape="round" color="success" expand="block" (click)="newEventCategory = false">Event Judges
+    </ion-button>
+    <div class="dashboardadmin" [hidden]="!newEventCategory">
+      <div style="text-align:center"><h3>New Event Category</h3></div>
+      <ion-row>
+        <ion-col>
+          <ion-label position="floating" color="primary">Name</ion-label>
+          <ion-select [(ngModel)]="eventCategoryCreateForm.name" required [ngModelOptions]="{standalone: true}">
+            <ion-select-option value="SENIOR">SENIOR</ion-select-option>
+            <ion-select-option value="JUNIOR">JUNIOR</ion-select-option>
+            <ion-select-option value="SUBJUNIOR">SUB JUNIOR</ion-select-option>
+          </ion-select>  
+        </ion-col>
+      </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">Gender</ion-label>
+            <ion-select [(ngModel)]="eventCategoryCreateForm.gender" required [ngModelOptions]="{standalone: true}">
+            <ion-select-option value="M">Male</ion-select-option>
+            <ion-select-option value="F">Female</ion-select-option>
+            <ion-select-option value="B">Both</ion-select-option>
+          </ion-select>   
+          </ion-col>
+          </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">Target Face Size Rings</ion-label>
+          <ion-input type="number" clearInput [(ngModel)]="eventCategoryCreateForm.target_face_size_rings"  required></ion-input>
+        </ion-col>
+          </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">Target Face Size Distance</ion-label>
+          <ion-input type="number" clearInput [(ngModel)]="eventCategoryCreateForm.target_face_size_distance"  required></ion-input>
+        </ion-col>
+          </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">Distance</ion-label>
+          <ion-input type="number" clearInput [(ngModel)]="eventCategoryCreateForm.distance"  required></ion-input>
+        </ion-col>
+          </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-button shape="round" color="success" expand="block" (click)="createNewEventCategory()" >Add New Event Category
+          </ion-button>
+         </ion-col>
+          </ion-row>
+    </div>
+    <br />
+    <br />
+  <div [hidden]="!(eventCatsList || []).length || !newEventCategory">
+    <div style="text-align:center"><h3>Events Categories Added</h3></div>
+    <br />
+      <div>
+          <ion-row>
+            <ion-col>
+              <div>
+                <strong> No.</strong>
+              </div>
+            </ion-col>
+              <ion-col>
+                  <div>
+                    <strong>Name</strong>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div>
+                   <strong>Gender</strong>
+                  </div>
+                </ion-col>
+              <ion-col>
+              <div>
+               <strong>Target Face Size Rings</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Target Face Size Distance</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Distance</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Action</strong>
+              </div>
+            </ion-col>
+          </ion-row>
+  
+          <ion-row *ngFor="let eventCat of eventCatsList; let i = index" >
+              <ion-col (click)="goToEventCat(eventCat)">
+                  <div>
+                   {{i+1}}
+                  </div>
+                </ion-col>
+                <ion-col (click)="goToEventCat(eventCat)">
+                <div>
+                  {{eventCat.name}}
+                </div>
+              </ion-col>
+              <ion-col (click)="goToEventCat(eventCat)">
+                <div >
+                  {{eventCat.gender}}
+                </div>
+              </ion-col >
+              <ion-col (click)="goToEventCat(eventCat)">
+                <div >
+                  {{eventCat.target_face_size_rings}}
+                </div>
+              </ion-col>
+              <ion-col (click)="goToEventCat(eventCat)">
+                <div >
+               {{eventCat.target_face_size_distance}}
+                </div>
+              </ion-col>
+              <ion-col (click)="goToEventCat(eventCat)">
+                <div >
+               {{eventCat.distance}}
+                </div>
+              </ion-col>
+              <ion-col>
+                <div >
+                <span (click)="deleteEventCategory(eventCat.id)">Delete</span>
+                </div>
+              </ion-col>
+            </ion-row>
+          
+      </div>
+    </div>
+    <div [hidden]="newEventCategory">
+      <div class="dashboardadmin">
+        <div style="text-align:center"><h3>Add Judges</h3></div>
+        <ion-row>
+          <ion-col>
+            <ion-label position="floating" color="primary">Judge Name</ion-label>
+            <ion-input type="text" clearInput [(ngModel)]="eventJudgeCreateForm.full_name"  required></ion-input> 
+          </ion-col>
+        </ion-row>
+          <ion-row>
+            <ion-col>
+            <ion-label position="floating" color="primary">Judge Email</ion-label>
+            <ion-input type="text" clearInput [(ngModel)]="eventJudgeCreateForm.email"  required></ion-input>
+             </ion-col>
+          </ion-row>
+            <ion-row>
+              <ion-col>
+              <ion-label position="floating" color="primary">Judge Password</ion-label>
+              <ion-input type="text" clearInput [(ngModel)]="eventJudgeCreateForm.password"  required></ion-input>
+              </ion-col>
+              </ion-row>
+                <ion-row>
+                  <ion-col>
+                  <ion-label position="floating" color="primary">Board No</ion-label>
+                  <ion-input type="number" clearInput [(ngModel)]="eventJudgeCreateForm.board_no"  required></ion-input>
+                  </ion-col>
+                </ion-row>
+          <ion-row>
+            <ion-col>
+            <ion-button shape="round" color="success" expand="block" (click)="addJudge()" >Add Judge
+            </ion-button>
+           </ion-col>
+            </ion-row>
+      </div>
+
+     
+      <br />
+      <br />
+      <div *ngIf="(eventJudges || []).length">
+        <div style="text-align:center">
+          <h3>Event Competition Judges</h3>
+        </div>
+        <br />
+        <div>
+          <ion-row>
+            <ion-col>
+              <div>
+                <strong> No.</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Full Name</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Email</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Board No</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Password</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Action</strong>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngFor="let eventJ of eventJudges; let i = index" >
+            <ion-col (click)="editJudge(eventJ)">
+              <div>
+                {{i+1}}
+              </div>
+            </ion-col>
+            <ion-col (click)="editJudge(eventJ)">
+              <div>
+                {{eventJ.judge.first_name}}
+              </div>
+            </ion-col>
+            <ion-col (click)="editJudge(eventJ)">
+              <div>
+                {{eventJ.judge.email}}
+              </div>
+            </ion-col>
+            <ion-col (click)="editJudge(eventJ)">
+              <div>
+                {{eventJ.board_no}}
+              </div>
+            </ion-col>
+            <ion-col (click)="editJudge(eventJ)">
+              <div>
+                {{eventJ.password}}
+              </div>
+            </ion-col>
+            <ion-col>
+              <div >
+                <span (click)="viewJudge(eventJ.judge.id)">View Scoring</span>
+                <br/>
+              <span (click)="deleteEventJudge(eventJ.id)">Delete</span>
+              </div>
+            </ion-col>
+          </ion-row>
+
+
+        </div>
+      </div>
+    </div>
+    <br />
+    <br />     <br />
+    <br />
+    <div>
+      <div style="text-align:center">
+        <h3>User Registrations</h3>
+      </div>
+      <br />
+      <div>
+        <ion-row>
+          <ion-col>
+            <div>
+              <strong> No.</strong>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <strong> ID.</strong>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <strong>Full Name</strong>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <strong>Email</strong>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <strong>Event Category</strong>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <strong>Bring Bow</strong>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <strong>Action</strong>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-searchbar
+        [(ngModel)]="searchUserTerm"
+        (ionChange)="setUserFiltered()"
+        ></ion-searchbar>
+        <ion-row *ngFor="let enrollMent of userEnrolments; let i = index" >
+          <ion-col>
+            <div>
+              {{i+1}}
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              {{enrollMent.user.id}}
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              {{enrollMent.user.first_name}} {{enrollMent.user.last_name}}
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              {{enrollMent.user.email}}
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              {{enrollMent.event_category.name}}
+            </div>
+          </ion-col>
+          <ion-col>
+            <div [hidden]="enrollMent.bring_bow">
+              Yes
+            </div>
+            <div [hidden]="!enrollMent.bring_bow">
+              No
+            </div>
+          </ion-col>
+          <ion-col>
+            <div [hidden]="enrollMent.is_arrived">
+              <span (click)="markArrive(enrollMent.id)">Mark Arrived</span>
+            </div>
+            <div [hidden]="!enrollMent.is_arrived">
+              Arrived at: {{enrollMent.arrival_time}}
+            </div>
+          </ion-col>
+        </ion-row>
+
+
+      </div>
+    </div>
+    </ion-grid>
+</ion-content>

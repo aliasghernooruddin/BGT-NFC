@@ -1,0 +1,137 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title text-center>
+      <h1 style="font-size: 32px; padding-right: 2rem;">Event Leaderboard</h1>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-spinner name="crescent" color="success" [hidden]="!showSpinner"></ion-spinner>
+    <div>
+      <ion-row>
+        <ion-col>
+        <ion-label position="floating" color="primary">Select Event</ion-label>
+          <ion-select [(ngModel)]="event_id" required [ngModelOptions]="{standalone: true}" (ionChange)="getCurrentCategories(event_id)">
+            <ion-select-option value={{event.id}} *ngFor="let event of eventsList; let i = index">{{event.name}} - {{event.id}}</ion-select-option>
+          </ion-select>   
+          </ion-col>
+      </ion-row>
+      <ion-row [hidden]="!(eventCatList || []).length">
+        <ion-col>
+        <ion-label position="floating" color="primary">Select Category</ion-label>
+          <ion-select [(ngModel)]="event_category_id" required [ngModelOptions]="{standalone: true}" (ionChange)="getCurrentCompetitions(event_category_id)">
+            <ion-select-option value={{cat.id}} *ngFor="let cat of eventCatList; let i = index">{{cat.name}} {{cat.gender}}</ion-select-option>
+          </ion-select>   
+          </ion-col>
+      </ion-row>
+      <ion-row [hidden]="!(eventCompList || []).length">
+        <ion-col>
+        <ion-label position="floating" color="primary">Select Competition</ion-label>
+          <ion-select [(ngModel)]="event_competition_id" required [ngModelOptions]="{standalone: true}" (ionChange)="getParticipants(event_competition_id)">
+            <ion-select-option value={{comp.id}} *ngFor="let comp of eventCompList; let i = index">{{comp.name}}</ion-select-option>
+          </ion-select>   
+          </ion-col>
+      </ion-row>
+
+      <div [hidden]="!(eventPartList || []).length">    
+        <div>
+          <ion-row>
+            <ion-col>
+              <div>
+                <strong>Rank</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>ID</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Full Name</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Slot No</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Board No</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>No. of Arrows</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Total Score</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Average Score</strong>
+              </div>
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row *ngFor="let eventP of eventPartList; let i = index" >
+            <ion-col>
+              <div>
+                {{eventP.rank}}
+              </div>
+            </ion-col>
+            <ion-col >
+              <div>
+                {{eventP.user.id}}
+              </div>
+            </ion-col>
+            <ion-col >
+              <div>
+                {{eventP.user.first_name}} {{eventP.user.last_name}}
+              </div>
+            </ion-col>
+            <ion-col >
+              <div>
+                {{eventP.slot_no}}
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                {{eventP.board_no}}
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                {{eventP.no_of_arrows}}
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                {{eventP.total_score}}
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                {{round(eventP.avg_score)}}
+              </div>
+            </ion-col>
+          </ion-row>
+
+
+        </div>
+      </div>
+    </div>
+
+    
+  </ion-grid>
+</ion-content>

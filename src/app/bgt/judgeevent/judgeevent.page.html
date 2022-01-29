@@ -1,0 +1,170 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title text-center>     
+      <h1 style="font-size: 32px; padding-right: 2rem;">Judge Scoring</h1>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="grid-color">
+    <ion-row>
+      <ion-col>
+      <ion-button shape="round" color="success" expand="block" (click)="loadSession()" >Load Session
+      </ion-button>
+     </ion-col>
+      </ion-row>
+  <ion-row>
+    <ion-col>
+    <ion-label position="floating" color="primary">Select Event</ion-label>
+      <ion-select [(ngModel)]="event_id" required [ngModelOptions]="{standalone: true}" (ionChange)="getCurrentCategories(event_id)">
+        <ion-select-option value={{judgeEvent.event.id}} *ngFor="let judgeEvent of judgeEventList; let i = index">{{judgeEvent.event.name}} - {{judgeEvent.event.id}}</ion-select-option>
+      </ion-select>   
+      </ion-col>
+  </ion-row>
+  <ion-row [hidden]="!(eventCatList || []).length">
+    <ion-col>
+    <ion-label position="floating" color="primary">Select Category</ion-label>
+      <ion-select [(ngModel)]="event_category_id" required [ngModelOptions]="{standalone: true}" (ionChange)="getCurrentCompetitions(event_category_id)">
+        <ion-select-option value={{cat.id}} *ngFor="let cat of eventCatList; let i = index">{{cat.name}} {{cat.gender}}</ion-select-option>
+      </ion-select>   
+      </ion-col>
+  </ion-row>
+  <ion-row [hidden]="!(eventCompList || []).length">
+    <ion-col>
+    <ion-label position="floating" color="primary">Select Competition</ion-label>
+      <ion-select [(ngModel)]="event_competition_id" required [ngModelOptions]="{standalone: true}" (ionChange)="getCurrentUsers(event_competition_id)">
+        <ion-select-option value={{comp.id}} *ngFor="let comp of eventCompList; let i = index">{{comp.name}} {{comp.competition_type}}</ion-select-option>
+      </ion-select>   
+      </ion-col>
+  </ion-row>
+  <ion-row [hidden]="!(currentUsersList || []).length">
+    <ion-col>
+    <ion-label position="floating" color="primary">Select Participant</ion-label>
+      <ion-select [(ngModel)]="current_user_id" required [ngModelOptions]="{standalone: true}" (ionChange)="getRounds()">
+        <ion-select-option value={{currentUser.user.id}} *ngFor="let currentUser of currentUsersList; let i = index">{{currentUser.user.first_name}} {{currentUser.user.last_name}} - {{currentUser.user.id}}</ion-select-option>
+      </ion-select>   
+      </ion-col>
+  </ion-row>
+  <ion-row [hidden]="!(round_in_comp || []).length">
+    <ion-col>
+    <ion-label position="floating" color="primary">Select Round</ion-label>
+      <ion-select [(ngModel)]="round_no" required [ngModelOptions]="{standalone: true}" (ionChange)="getCurrentScore(current_user_id, round_no)">
+        <ion-select-option value={{round}} *ngFor="let round of round_in_comp; let i = index">{{round}}</ion-select-option>
+      </ion-select>   
+      </ion-col>
+  </ion-row>
+</ion-grid>
+  <div *ngIf="!!(eventScores || []).length">
+    <ion-row>
+      <ion-col>
+      <ion-button shape="round" color="success" expand="block" (click)="saveSession()" >Save Session
+      </ion-button>
+     </ion-col>
+      </ion-row>
+  <ion-card>
+    <ion-card style="float: left;" (click)=saveRound()>
+      <ion-card-header>
+        <ion-card-subtitle >Save Round No</ion-card-subtitle>
+        <ion-card-title style="text-align: center;">{{round_no}}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+    <div>
+      <ion-card-content>
+        <ion-card-subtitle>{{selectedBoard.event.name}}</ion-card-subtitle>
+        <ion-card-subtitle>{{event_category.name}} {{event_category.gender}} - {{event_category.distance}} meters - Target: {{event_category.target_face_size_rings}}/{{event_category.target_face_size_distance}}m </ion-card-subtitle>
+      </ion-card-content>
+    </div>
+  </ion-card>
+  <ion-card>
+    <ion-card style="float: left;">
+      <ion-card-header>
+        <ion-card-subtitle>Arrow No</ion-card-subtitle>
+        <ion-card-title style="text-align: center;">{{currentScore.arrow_no}}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+    <div>
+      <ion-card-content>
+        <ion-card-title>{{selectedUser.user.first_name}} {{selectedUser.user.last_name}}</ion-card-title>
+        <ion-card-subtitle>{{selectedUser.user.email}}</ion-card-subtitle>
+      </ion-card-content>
+    </div>
+  </ion-card>
+  <ion-card>
+    <ion-card style="float: left; width: 5pc;">
+      <div>
+        <img style="float: left;" src="assets/img/target.png" alt="Nadil-Burhani">
+      </div>
+    </ion-card>
+    <ion-row >
+      <ion-col *ngFor="let score of eventScores; let i = index">
+        <ion-button (click)="showGame(score.id, i)" shape="round" expand="block" color="warning" *ngIf="score.points == 10 || score.points == 9">{{score.points}}&nbsp;&nbsp;<ion-icon [hidden]="this.currentScore.id != score.id" name="eye"></ion-icon></ion-button>
+        <ion-button (click)="showGame(score.id, i)" shape="round" expand="block" color="danger" *ngIf="score.points == 8 || score.points == 7">{{score.points}}&nbsp;&nbsp;<ion-icon [hidden]="this.currentScore.id != score.id" name="eye"></ion-icon></ion-button>
+        <ion-button (click)="showGame(score.id, i)" shape="round" expand="block" color="primary" *ngIf="score.points == 6 || score.points == 5">{{score.points}}&nbsp;&nbsp;<ion-icon [hidden]="this.currentScore.id != score.id" name="eye"></ion-icon></ion-button>
+        <ion-button (click)="showGame(score.id, i)" shape="round" expand="block" color="dark" *ngIf="score.points == 4 || score.points == 3">{{score.points}}&nbsp;&nbsp;<ion-icon [hidden]="this.currentScore.id != score.id" name="eye"></ion-icon></ion-button>
+        <ion-button (click)="showGame(score.id, i)" shape="round" expand="block" color="light" *ngIf="score.points == 2 || score.points == 1">{{score.points}}&nbsp;&nbsp;<ion-icon [hidden]="this.currentScore.id != score.id" name="eye"></ion-icon></ion-button>
+        <ion-button (click)="showGame(score.id, i)" shape="round" expand="block" color="default" *ngIf="score.points == 0">{{score.points}}&nbsp;&nbsp;<ion-icon [hidden]="this.currentScore.id != score.id" name="eye"></ion-icon></ion-button>
+      </ion-col>
+    </ion-row>
+    
+    <!-- <ion-segment value="round1">
+      <ion-segment-button *ngFor="let score of eventScores; let i = index"  class="segment_point" value="round1">
+        <ion-label (click)="showGame(score.id)">Arrow No {{score.arrow_no}}</ion-label>
+      </ion-segment-button>
+    </ion-segment> -->
+  </ion-card>
+
+
+  <ion-grid *ngIf="!!currentScore && currentScore.arrow_no && !hideScore">
+    <ion-row>
+      <ion-col >
+        <ion-button (click)="Scorepoints(10)" shape="round"  expand="block" color="warning" > 10-X </ion-button>
+      </ion-col>
+      <ion-col >
+        <ion-button (click)="Scorepoints(10)" shape="round"  expand="block" color="warning" > 10 </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button (click)="Scorepoints(9)" shape="round"  expand="block"  expand="block" color="warning"> 09 </ion-button>
+      </ion-col>
+
+    </ion-row>
+    <ion-row style="margin-top: -11px;">
+      <ion-col>
+        <ion-button (click)="Scorepoints(8)" shape="round"  expand="block" color="danger" > 08 </ion-button>
+      </ion-col>
+      <ion-col >
+        <ion-button (click)="Scorepoints(7)" shape="round"  expand="block" color="danger" > 07 </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button (click)="Scorepoints(6)" shape="round"  expand="block"  color="primary"> 06 </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-top: -11px;">
+        <ion-col>
+          <ion-button (click)="Scorepoints(5)" shape="round"  expand="block"  color="primary"> 05 </ion-button>
+        </ion-col>
+        <ion-col >
+        <ion-button (click)="Scorepoints(4)" shape="round"  expand="block"  color="dark"> 04 </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button (click)="Scorepoints(3)" shape="round"  expand="block" color="dark" > 03 </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-top: -11px;">
+        <ion-col>
+          <ion-button (click)="Scorepoints(2)" shape="round"  expand="block"  color="light"> 02 </ion-button>
+        </ion-col>
+        <ion-col>
+        <ion-button (click)="Scorepoints(1)" shape="round"  expand="block" color="light" > 01 </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button (click)="Scorepoints(0)" shape="round"  expand="block"  color="default"> M </ion-button>
+      </ion-col>
+    </ion-row>
+    <!-- </ion-card> -->
+  </ion-grid>
+</div>
+</ion-content>

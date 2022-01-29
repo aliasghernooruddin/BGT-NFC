@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
-import { AuthenticationService } from './services/authentication.service';
 import { Component } from '@angular/core';
+import { Toast } from '@ionic-native/toast/ngx';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -14,25 +14,28 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private authenticationService: AuthenticationService,
+    private toast: Toast,
     private router: Router
   ) {
+
     this.initializeApp();
   }
  
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
-      this.splashScreen.hide(); 
- 
-      this.authenticationService.authenticationState.subscribe(state => {
-        if (state) {
-          this.router.navigate(['home']);
-        } else {
-          this.router.navigate(['login']);
-        }
-      });
- 
+      this.splashScreen.show();
+      setTimeout(() => {
+        this.splashScreen.hide(); 
+        var notificationOpenedCallback = function(jsonData) {
+          this.toast.show(JSON.stringify(jsonData), '5000', 'center').subscribe(() => { });
+        };
+    
+        // window["plugins"].OneSignal
+        //   .startInit("4bd862d0-29cc-419b-99bf-98843ce08713", "387477629525")
+        //   .handleNotificationOpened(notificationOpenedCallback)
+        //   .endInit();
+      }, 1000);
     });
   }
 }

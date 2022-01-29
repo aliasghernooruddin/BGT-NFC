@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title text-center>     
+      <h1 style="font-size: 32px; padding-right: 2rem;">Competitions</h1>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-spinner name="crescent" color="success" [hidden]="!showSpinner"></ion-spinner>
+  
+  <ion-row [hidden]="!(eventCompList || []).length">
+    <ion-col>
+      <ion-label position="floating" color="primary">Event Competitions</ion-label>
+      <ion-select [(ngModel)]="selectedComp.id" required [ngModelOptions]="{standalone: true}" (ionChange)="getCompScores(selectedComp.id)">
+      <ion-select-option value={{eventComp.id}} *ngFor="let eventComp of eventCompList; let i = index">{{eventComp.name}}</ion-select-option>
+    </ion-select>
+    </ion-col>
+  </ion-row>
+  <ion-row [hidden]="(eventCompList || []).length">
+
+    <ion-col>
+      <h3 style="text-align: center;">Event not yet started</h3>
+    </ion-col>
+  </ion-row>
+  <div *ngIf="!!(eventScoresList || []).length">
+    <ion-button shape="round" color="success" expand="block" (click)="downloadReport()" >Download Report
+    </ion-button>
+    <div >
+
+    <div style="text-align:center"><h3>{{eventScoresList[0].event_participant.user.first_name}} {{eventScoresList[0].event_participant.user.last_name}} Scores in {{event.name}}</h3></div>
+    <p>Rank: {{eventScoresList[0].event_participant.rank}}</p>
+    <p>Slot No: {{eventScoresList[0].event_participant.slot_no}}</p>
+    <p>Board No: {{eventScoresList[0].event_participant.board_no}}</p>
+    <p>Total Score: {{totalScore}}</p>
+    <br />
+      <div>
+          <ion-row>
+            <ion-col>
+              <div>
+                <strong> Round No.</strong>
+              </div>
+            </ion-col>
+              <ion-col>
+                  <div>
+                    <strong>Arrow No.</strong>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div>
+                   <strong>Points</strong>
+                  </div>
+                </ion-col>
+          </ion-row>
+  
+          <ion-row *ngFor="let eventScore of eventScoresList; let i = index">
+              <ion-col>
+                  <div>
+                    {{eventScore.round_no}}
+                  </div>
+                </ion-col>
+                <ion-col>
+                <div>
+                  {{eventScore.arrow_no}}
+                </div>
+              </ion-col>
+              <ion-col>
+                <div >
+                  {{eventScore.points}}
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+      </div>
+    </div>
+    </ion-grid>
+</ion-content>

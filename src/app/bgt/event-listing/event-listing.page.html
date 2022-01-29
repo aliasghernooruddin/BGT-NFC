@@ -1,0 +1,170 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title text-center>     
+      <h1 style="font-size: 32px; padding-right: 2rem;">Events List</h1>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-spinner name="crescent" color="success" [hidden]="!showSpinner"></ion-spinner>
+    <ion-button shape="round" color="danger" expand="block" (click)="newEventForm = !newEventForm"  >New Event
+    </ion-button>
+    <div class="dashboardadmin" [hidden]="!newEventForm">
+      <div style="text-align:center"><h3>New Event Form</h3></div>
+      <ion-row>
+        <ion-col>
+          <ion-label position="floating" color="primary">Name</ion-label>
+          <ion-input type="text" clearInput [(ngModel)]="eventCreateForm.name"  required></ion-input>
+        </ion-col>
+      </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">No of Arrows</ion-label>
+          <ion-input type="number" clearInput [(ngModel)]="eventCreateForm.no_of_arrows"  required></ion-input>
+        </ion-col>
+          </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">No of Rounds</ion-label>
+          <ion-input type="number" clearInput [(ngModel)]="eventCreateForm.no_of_rounds"  required></ion-input>
+        </ion-col>
+          </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">No of Boards</ion-label>
+          <ion-input type="number" clearInput [(ngModel)]="eventCreateForm.no_of_boards"  required></ion-input>
+        </ion-col>
+          </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">No of Players in each Boards</ion-label>
+          <ion-input type="number" clearInput [(ngModel)]="eventCreateForm.no_of_player_in_board"  required></ion-input>
+        </ion-col>
+          </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">Description</ion-label>
+          <ion-input type="text" clearInput [(ngModel)]="eventCreateForm.description"  required></ion-input>
+        </ion-col>
+          </ion-row>
+    
+        <ion-row>
+          <ion-col>
+          <ion-label color="primary">Event Date</ion-label>
+          <ion-datetime clearInput [(ngModel)]="eventCreateForm.event_start_date"  required placeholder="Select Date">
+          </ion-datetime>
+        </ion-col>
+          </ion-row>
+        <ion-row>
+          <ion-col>
+          <ion-button shape="round" color="success" expand="block" (click)="createNewEvent()" >Create New Event
+          </ion-button>
+         </ion-col>
+          </ion-row>
+    </div>
+    <br />
+    <br />
+  <div [hidden]="!(eventsList || []).length && !newEventForm">
+    <div style="text-align:center"><h3>Events Created By You</h3></div>
+    <br />
+      <div>
+          <ion-row>
+            <ion-col>
+              <div>
+                <strong> No.</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong> Event Id</strong>
+              </div>
+            </ion-col>
+              <ion-col>
+                  <div>
+                    <strong>Event Name</strong>
+                  </div>
+                </ion-col>
+              <ion-col>
+              <div>
+               <strong>Event Start Date</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Event State</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>No. of Boards</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Created At</strong>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <strong>Action</strong>
+              </div>
+            </ion-col>
+          </ion-row>
+  
+          <ion-row *ngFor="let event of eventsList; let i = index" >
+              <ion-col (click)="goToEvent(event)">
+                  <div>
+                   {{i+1}}
+                  </div>
+                </ion-col>
+                <ion-col (click)="goToEvent(event)">
+                  <div>
+                    {{event.id}}
+                  </div>
+                </ion-col>
+                <ion-col (click)="goToEvent(event)">
+                <div>
+                  {{event.name}}
+                </div>
+              </ion-col>
+              <ion-col (click)="goToEvent(event)">
+                <div >
+               {{ convertDate(event.event_start_date)}}
+                </div>
+              </ion-col>
+              <ion-col (click)="goToEvent(event)">
+                <div >
+               {{event.event_state}}
+                </div>
+              </ion-col>
+              <ion-col (click)="goToEvent(event)">
+                <div >
+               {{event.no_of_boards}}
+                </div>
+              </ion-col>
+              <ion-col (click)="goToEvent(event)">
+                <div >
+                  {{ convertDate(event.created_at)}}
+                </div>
+              </ion-col>
+              <ion-col>
+                <div >
+                <span (click)="deleteEvent(event.id, $event)">Delete</span>
+                </div>
+              </ion-col>
+            </ion-row>
+          
+      </div>
+    </div>
+    </ion-grid>
+</ion-content>

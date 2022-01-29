@@ -1,0 +1,117 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+      <ion-title text-center>
+        <h3 style="white-space: normal">Welcome to Pak Archers Mobile App</h3>
+        <ion-text style="font-size: small" >Please Signup first to continue</ion-text></ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-spinner name="crescent" color="success" [hidden]="!showSpinner"></ion-spinner>
+      <div class="dashboardadmin">
+       <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">First Name</ion-label>
+          <ion-input  color="success" type="text" clearInput [(ngModel)]="signupData.first_name"  required></ion-input>
+        </ion-col>
+</ion-row>
+    
+       <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">Last Name</ion-label>
+          <ion-input  color="success" type="text" clearInput [(ngModel)]="signupData.last_name"  required></ion-input>
+        </ion-col>
+</ion-row>
+    
+       <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">Email</ion-label>
+          <ion-input  color="success" type="text" clearInput [(ngModel)]="signupData.email"  required></ion-input>
+        </ion-col>
+</ion-row>
+    
+       <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">Phone Number</ion-label>
+          <ion-input  color="success" type="number" clearInput [(ngModel)]="signupData.mobile_no"  required></ion-input>
+        </ion-col>
+</ion-row>
+    
+       <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">CNIC</ion-label>
+          <ion-input  color="success" type="text" clearInput [(ngModel)]="signupData.cnic"  required></ion-input>
+        </ion-col>
+</ion-row>
+    
+       <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">Gender</ion-label>
+          <ion-select  [(ngModel)]="signupData.gender" required [ngModelOptions]="{standalone: true}">
+            <ion-select-option value="M">Male</ion-select-option>
+            <ion-select-option value="F">Female</ion-select-option>
+          </ion-select>
+          </ion-col>
+</ion-row>
+    
+       <ion-row>
+          <ion-col>
+          <ion-label color="primary">Date of Birth</ion-label>
+          <ion-datetime  name="date" required [(ngModel)]="signupData.dob"  placeholder="Select Date" >
+          </ion-datetime>
+          </ion-col>
+</ion-row>
+    
+       <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">How long you are doing Archery? (Years)</ion-label>
+          <ion-input  color="success" type="number" clearInput [(ngModel)]="signupData.archery_years"  required></ion-input>
+        </ion-col>
+</ion-row>
+    
+       <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">Education</ion-label>
+          <ion-input  color="success" type="text" clearInput [(ngModel)]="signupData.education"  required></ion-input>
+        </ion-col>
+</ion-row>
+    
+       <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">Club Name</ion-label>
+          <ion-input  color="success" type="text" clearInput [(ngModel)]="signupData.club_name"  required></ion-input>
+        </ion-col>
+</ion-row>
+    
+       <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">
+            Password
+          </ion-label>
+          <ion-input  color="success" type="password" clearInput [(ngModel)]="signupData.password"  required></ion-input>
+        </ion-col>
+      </ion-row>
+
+    <ion-row>
+      <ion-col>
+      <ion-label position="floating" color="primary">
+        Confirm Password
+      </ion-label>
+      <ion-input  color="success" type="password" clearInput [(ngModel)]="signupData.confirm_password"  required></ion-input>
+    </ion-col>
+    </ion-row>
+    
+    
+        <ion-button shape="round" color="success" expand="block" (click)="register()" expand="block" >Register</ion-button>
+    
+        <ion-row justify-content-center >
+          <div text-center>
+            <p style="text-align: center">Already have an account? <a (click)="goToLogin()">Please Login.</a></p>
+          </div>
+      </ion-row>
+      </div>
+    <br />
+    <br />
+    </ion-grid>
+</ion-content>

@@ -33,12 +33,22 @@ export class AuthenticationService {
 
   logout() {
     return this.storage.remove('collectorObject').then(() => {
+      this.storage.remove('csrf')
       this.authenticationState.next(false);
     });
+    
   }
 
   isAuthenticated() {
     return this.authenticationState.value;
+  }
+
+  setCsrf(token) {
+    return this.storage.set('csrf', token)
+  }
+
+  getCsrf() {
+    return this.storage.get('csrf')
   }
 
   getToken() {

@@ -1,0 +1,85 @@
+<ion-menu contentId="content">
+  <ion-header >
+    <ion-toolbar color="secondary">
+   <h1 style="text-align:center"> Pak Archers</h1>
+  </ion-toolbar>
+  </ion-header>
+
+  <ion-content color="dark">
+    <ion-grid padding>
+      <ion-row justify-content-center>
+        <ion-col align-self-center size-md="12" size-lg=12 size-xs="12">
+        <div text-center>
+            <ion-text color="light" style="font-size: 20px;">{{loggedInUser.first_name}} {{loggedInUser.last_name}} - (Id: {{loggedInUser.id}})</ion-text>
+        </div> 
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div *ngFor="let p of pages">
+
+      <!-- Standard Menu Item -->
+      <ion-menu-toggle *ngIf="p.url">
+        <ion-item [routerLink]="p.url" routerDirection="root" routerLinkActive="active" color="dark"  style="--inner-border-width: 0 0 0 0;">
+          <ion-icon [name]="p.icon" slot="start" style="font-size: 21px;"></ion-icon>
+          <ion-label>
+              <ion-text color="light"><h1 style="font-size: 20px;">{{ p.title }}</h1></ion-text>
+
+            
+          </ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle *ngIf="p.title == 'Scan'">
+        <ion-item (click)="scan()" color="dark"   style="--inner-border-width: 0 0 0 0;">
+          <ion-icon [name]="p.icon" slot="start" style="font-size: 21px;"></ion-icon>
+          <ion-label>
+              <ion-text color="light" ><h1 style="font-size: 20px;">{{ p.title }}</h1></ion-text>
+
+            
+          </ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle *ngIf="p.title == 'Logout'">
+          <ion-item (click)="logout()" color="dark"   style="--inner-border-width: 0 0 0 0;">
+            <ion-icon [name]="p.icon" slot="start" style="font-size: 21px;"></ion-icon>
+            <ion-label>
+                <ion-text color="light" ><h1 style="font-size: 20px;">{{ p.title }}</h1></ion-text>
+  
+              
+            </ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      <!-- Item with Children -->
+
+      <ion-item button *ngIf="p.children?.length > 0" (click)="p.open = !p.open" [class.parent-active]="p.open"
+        detail="false" >
+        <ion-icon slot="start" name="arrow-forward" *ngIf="!p.open"></ion-icon>
+        <ion-icon slot="start" name="arrow-down" *ngIf="p.open"></ion-icon>
+        <ion-label>{{ p.title }}</ion-label>
+      </ion-item>
+
+      <!-- Children List for clicked Item -->
+      <ion-list *ngIf="p.open">
+        <ion-menu-toggle>
+          <ion-item *ngFor="let sub of p.children" class="sub-item" [routerLink]="sub.url" routerDirection="root"
+            routerLinkActive="active">
+            <ion-icon [name]="sub.icon" slot="start"></ion-icon>
+            <ion-label>
+              {{ sub.title }}
+            </ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+
+    </div>
+  </ion-content>
+  <ion-footer>
+    <ion-toolbar color="dark" text-center style="font-size:12px; line-height: 7px;">
+      <p> Copyright &copy; 2021 Pak Archers</p>
+     <p> Developed by</p>  
+     <a (click)="openLink()"> <img src="../../../assets/img/5cube-logo.png" width="15%"> </a>
+    </ion-toolbar>
+  </ion-footer>
+</ion-menu>
+
+
+<ion-router-outlet id="content" main></ion-router-outlet>

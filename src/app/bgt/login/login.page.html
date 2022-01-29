@@ -1,26 +1,43 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="secondary">
+        <ion-title text-center>
+          <h3 style="white-space: normal">Welcome to Pak Archers Mobile App</h3>
+          <ion-text style="font-size: small" >Please login first to continue</ion-text></ion-title>
+      </ion-toolbar>
 </ion-header>
 
-<ion-content padding>  
-      <ion-item>
-          <ion-label>Email</ion-label>
-          <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" [(ngModel)]="loginCredentials.username">
-            <ion-select-option *ngFor="let details of eventDetails" [value]="details['email']" >{{ details['email'] }}</ion-select-option>
-          </ion-select>
-        </ion-item>
-        <ion-item>
-            <ion-input placeholder="Password"type="password" clearInput [(ngModel)]="loginCredentials.password"></ion-input>
-          </ion-item>
-          <ion-item>
-              <ion-label>Role</ion-label>
-              <ion-select  [interfaceOptions]="customPopoverOptions" interface="popover" [(ngModel)]="loginCredentials.role">
-                <ion-select-option *ngFor="let details of eventDetails" [value]="details['role']" >{{ details['role'] }}</ion-select-option>
-              </ion-select>
-            </ion-item>
-<br>
-            <ion-button (click)="login()" fill="outline">Login</ion-button>
-           
+<ion-content padding>
+    <ion-spinner name="crescent" color="success" [hidden]="!showSpinner"></ion-spinner>  
+
+      <ion-grid padding>
+        <ion-row justify-content-center >
+          <ion-col align-self-center  size-md="12" size-lg=12 size-xs="12">
+            <div padding>
+              <ion-item> 
+                  <ion-label position="floating">Email</ion-label>
+                  <ion-input  color="success" type="text" clearInput [(ngModel)]="loginData.email"  required></ion-input>
+              </ion-item>
+            </div>
+            <div padding>
+              <ion-item > 
+                  <ion-label position="floating">Password</ion-label>
+                  <ion-input type="password"  color="success" clearInput [(ngModel)]="loginData.password" required></ion-input>
+              </ion-item>
+            </div>
+            <div padding>
+              <ion-button size="large" type="submit" (click)="login()" shape="round" color="dark"  expand="block">Login</ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row justify-content-center >
+            <div text-center>
+              <p style="text-align: center">If you have forgetten your password, please contact on itsmemz52@gmail.com</p>
+            </div>
+        </ion-row>
+        <ion-row justify-content-center >
+          <div text-center>
+            <p style="text-align: center">Don't have an account? <a (click)="goToRegisterPage()">Create an account.</a></p>
+          </div>
+      </ion-row>
+      </ion-grid>
   </ion-content>

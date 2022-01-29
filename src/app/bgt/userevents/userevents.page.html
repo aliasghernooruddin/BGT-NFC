@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title text-center>     
+      <h1 style="font-size: 32px; padding-right: 2rem;">Events List</h1>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-spinner name="crescent" color="success" [hidden]="!showSpinner"></ion-spinner>
+    <ion-button shape="round" color="danger" expand="block" (click)="newEventForm = !newEventForm"  >Register in Event
+    </ion-button>
+    <div class="dashboardadmin" [hidden]="!newEventForm">
+      <div style="text-align:center"><h3>Event Registeration</h3></div>
+      <ion-row>
+        <ion-col>
+          <ion-label position="floating" color="primary">Event</ion-label>
+          <ion-select [(ngModel)]="eventEnrolForm.event_id" required [ngModelOptions]="{standalone: true}" (ionChange)="getEventCategories(eventEnrolForm.event_id)">
+          <ion-select-option value={{event.id}} *ngFor="let event of eventsList; let i = index">{{event.name}}</ion-select-option>
+        </ion-select>
+        </ion-col>
+      </ion-row>
+
+      <ion-card color="light" [hidden]="!selectedEvent.id">
+        <ion-card-header>
+          <ion-card-subtitle>Date: {{ convertDate(selectedEvent.event_start_date)}} &nbsp;&nbsp;&nbsp;&nbsp; <strong>State:  {{selectedEvent.event_state}}</strong></ion-card-subtitle>
+          <ion-card-title>Event Name:  {{selectedEvent.name}} </ion-card-title>
+        </ion-card-header>
+        <ion-card-content >
+          <p>No. of Arrows: {{selectedEvent.no_of_arrows}}</p>
+          <p>No. of Rounds: {{selectedEvent.no_of_rounds}}</p>
+          <p>No. of Boards: {{selectedEvent.no_of_boards}}</p>
+        </ion-card-content>
+      </ion-card>
+      <ion-row>
+        <ion-col>
+          <ion-label position="floating" color="primary">Event Categories</ion-label>
+          <ion-select [(ngModel)]="eventEnrolForm.event_category_id" required [ngModelOptions]="{standalone: true}" (ionChange)="getCatDetails(eventEnrolForm.event_category_id)">
+          <ion-select-option value={{eventCat.id}} *ngFor="let eventCat of eventsCatList; let i = index">{{eventCat.name}}</ion-select-option>
+        </ion-select>
+        </ion-col>
+      </ion-row>
+      <ion-card color="light" [hidden]="!selectedCategory.id">
+        <ion-card-header>
+          <ion-card-title>{{selectedCategory.name}} {{selectedCategory.gender}} - {{selectedCategory.distance}} meters - Target: {{selectedCategory.target_face_size_rings}}/{{selectedCategory.target_face_size_distance}}m </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+      <ion-row>
+        <ion-col>
+          <ion-label position="floating" color="primary">Bring Bow</ion-label>
+          <ion-select [(ngModel)]="eventEnrolForm.bring_bow" required [ngModelOptions]="{standalone: true}" >
+          <ion-select-option value="true">Yes</ion-select-option>
+          <ion-select-option value="false">No</ion-select-option>
+        </ion-select>
+        </ion-col>
+      </ion-row>
+  
+    
+        <ion-row>
+          <ion-col>
+          <ion-button shape="round" color="success" expand="block" (click)="eventEnrol()" >Register
+          </ion-button>
+         </ion-col>
+          </ion-row>
+    </div>
+    <br />
+    <br />
+  <div [hidden]="!(eventsList || []).length && !newEventForm">
+    <div style="text-align:center"><h3>Events Registered</h3></div>
+  <ion-card *ngFor="let event of eventsList; let i = index"  color="light">
+    <div [hidden]="!event.is_enrolled">
+    <ion-card-header>
+      <ion-card-subtitle>({{i+1}}) &nbsp;&nbsp;&nbsp;&nbsp; Date: {{ convertDate(event.event_start_date)}} &nbsp;&nbsp;&nbsp;&nbsp; <strong>State:  {{event.event_state}}</strong></ion-card-subtitle>
+      <ion-card-title>Event Name:  {{event.name}} </ion-card-title>
+    </ion-card-header>
+    <ion-card-content >
+      <p *ngIf="!!event.is_enrolled">Event Category: {{event.event_category.name}}</p>
+      <p>No. of Arrows: {{event.no_of_arrows}}</p>
+      <p>No. of Rounds: {{event.no_of_rounds}}</p>
+      <p>No. of Boards: {{event.no_of_boards}}</p>
+      <ion-button shape="round" color="success" expand="block" (click)="viewCompetitions(event)" >View Competitions
+      </ion-button>
+    </ion-card-content>
+    </div>
+    
+  </ion-card>
+    </div>
+    </ion-grid>
+</ion-content>

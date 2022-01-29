@@ -1,0 +1,201 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-button (click)="moveBack()"> <ion-icon name="arrow-back" style="font-size: 26px;"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title text-center>     
+      <h1 style="font-size: 32px; padding-right: 2rem;">Competitions</h1>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-spinner name="crescent" color="success" [hidden]="!showSpinner"></ion-spinner>
+      <div class="dashboardadmin">
+        <div style="text-align:center"><h3>Event {{this.event.name}}</h3></div>
+        <div style="text-align:center"><h3>Category {{this.eventCat.name}} {{this.eventCat.gender}}</h3></div>
+        <ion-row>
+          <ion-col>
+            <ion-label position="floating" color="primary">Name</ion-label>
+            <ion-select [(ngModel)]="eventCat.name" required [ngModelOptions]="{standalone: true}">
+              <ion-select-option value="SENIOR">SENIOR</ion-select-option>
+              <ion-select-option value="JUNIOR">JUNIOR</ion-select-option>
+              <ion-select-option value="SUBJUNIOR">SUB JUNIOR</ion-select-option>
+            </ion-select>  
+          </ion-col>
+        </ion-row>
+      
+          <ion-row>
+            <ion-col>
+              <ion-label position="floating" color="primary">Gender</ion-label>
+              <ion-select [(ngModel)]="eventCat.gender" required [ngModelOptions]="{standalone: true}">
+                <ion-select-option value="M">Male</ion-select-option>
+                <ion-select-option value="F">Female</ion-select-option>
+              <ion-select-option value="B">Both</ion-select-option>
+            </ion-select>   
+          </ion-col>
+            </ion-row>
+      
+          <ion-row>
+            <ion-col>
+            <ion-label position="floating" color="primary">Target Face Size Rings</ion-label>
+            <ion-input type="number" clearInput [(ngModel)]="eventCat.target_face_size_rings"  required></ion-input>
+          </ion-col>
+            </ion-row>
+      
+          <ion-row>
+            <ion-col>
+            <ion-label position="floating" color="primary">Target Face Size Distance</ion-label>
+            <ion-input type="number" clearInput [(ngModel)]="eventCat.target_face_size_distance"  required></ion-input>
+          </ion-col>
+            </ion-row>
+      
+          <ion-row>
+            <ion-col>
+            <ion-label position="floating" color="primary">Distance</ion-label>
+            <ion-input type="number" clearInput [(ngModel)]="eventCat.distance"  required></ion-input>
+          </ion-col>
+            </ion-row>
+      
+          <ion-row>
+            <ion-col>
+            <ion-button shape="round" color="success" expand="block" (click)="updateEventCategory()" >Update Event Category
+            </ion-button>
+           </ion-col>
+            </ion-row>
+      </div>
+    <br />
+    <br />
+    <ion-button shape="round" color="danger" expand="block" (click)="newEventCompetition = !newEventCompetition"  >New Event Competition
+    </ion-button>
+    <div class="dashboardadmin" [hidden]="!newEventCompetition">
+      <div style="text-align:center"><h3>New Event Competition</h3></div>
+      <ion-row>
+        <ion-col>
+          <ion-label position="floating" color="primary">Name</ion-label>
+          <ion-input type="text" clearInput [(ngModel)]="eventCompetitionCreateForm.name"  required></ion-input> 
+        </ion-col>
+      </ion-row>
+  
+        <ion-row>
+          <ion-col>
+          <ion-label position="floating" color="primary">Top Output Selection</ion-label>
+          <ion-select [(ngModel)]="eventCompetitionCreateForm.top_selection" required [ngModelOptions]="{standalone: true}">
+            <ion-select-option value="64">64</ion-select-option>
+            <ion-select-option value="32">32</ion-select-option>
+            <ion-select-option value="16">16</ion-select-option>
+            <ion-select-option value="8">8</ion-select-option>
+            <ion-select-option value="4">4</ion-select-option>
+            <ion-select-option value="2">2</ion-select-option>
+            <ion-select-option value="2">1</ion-select-option>
+        </ion-select>  
+        </ion-col>
+          </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-label position="floating" color="primary">Competition Type</ion-label>
+                <ion-select [(ngModel)]="eventCompetitionCreateForm.competition_type" required [ngModelOptions]="{standalone: true}">
+                  <ion-select-option value="NORMAL">Normal</ion-select-option>
+                  <ion-select-option value="HEAD">Head to Head</ion-select-option>
+              </ion-select>   
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-label position="floating" color="primary">Level</ion-label>
+                <ion-select [(ngModel)]="eventCompetitionCreateForm.level" required [ngModelOptions]="{standalone: true}">
+                  <ion-select-option value="1">1</ion-select-option>
+                  <ion-select-option value="2">2</ion-select-option>
+                  <ion-select-option value="3">3</ion-select-option>
+                  <ion-select-option value="4">4</ion-select-option>
+                  <ion-select-option value="5">5</ion-select-option>
+                  <ion-select-option value="6">6</ion-select-option>
+                  <ion-select-option value="7">7</ion-select-option>
+              </ion-select>   
+              </ion-col>
+            </ion-row>
+        <ion-row>
+          <ion-col>
+          <ion-button shape="round" color="success" expand="block" (click)="createNewEventCompetition()" >Add New Competition
+          </ion-button>
+         </ion-col>
+          </ion-row>
+    </div>
+    <br />
+    <br />
+  <div [hidden]="!(eventCompList || []).length && !newEventCompetition">
+    <div style="text-align:center"><h3>Events Competitions Created</h3></div>
+    <br />
+      <div>
+          <ion-row>
+            <ion-col>
+              <div>
+                <strong> No.</strong>
+              </div>
+            </ion-col>
+              <ion-col>
+                  <div>
+                    <strong>Name</strong>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div>
+                   <strong>Top Select</strong>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div>
+                   <strong>Type</strong>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div>
+                   <strong>Level</strong>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div>
+                    <strong>Action</strong>
+                  </div>
+                </ion-col>
+          </ion-row>
+  
+          <ion-row *ngFor="let eventComp of eventCompList; let i = index" >
+              <ion-col>
+                  <div>
+                   {{i+1}}
+                  </div>
+                </ion-col>
+                <ion-col (click)="goToEventComp(eventComp)">
+                <div>
+                  {{eventComp.name}}
+                </div>
+              </ion-col>
+              <ion-col (click)="goToEventComp(eventComp)">
+                <div >
+                  {{eventComp.top_selection}}
+                </div>
+              </ion-col>
+              <ion-col (click)="goToEventComp(eventComp)">
+                <div >
+                  {{eventComp.competition_type}}
+                </div>
+              </ion-col>
+              <ion-col (click)="goToEventComp(eventComp)">
+                <div >
+                  {{eventComp.level}}
+                </div>
+              </ion-col>
+              <ion-col>
+                <div >
+                  <span (click)="deleteEventCompetition(eventComp.id)">Delete</span>
+                </div>
+              </ion-col>
+            </ion-row>
+          
+      </div>
+    </div>
+
+    </ion-grid>
+</ion-content>
