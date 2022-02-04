@@ -151,7 +151,7 @@ event = {id: 0, event_category: {id: 0, name:0},name: "", no_of_rounds:0, no_of_
       
       // var imgData = 'data:image/jpeg;base64,'+ this.base64.encodeFile('');
       var img = new Image();
-      var src = "../../assets/img/letterheadanb.jpeg";
+      var src = "../../assets/img/letterheadanb.png";
       img.src = src;
       doc.addImage(img, 'JPEG', 1, 10, 620, 120);
       console.log(img)
@@ -172,7 +172,12 @@ event = {id: 0, event_category: {id: 0, name:0},name: "", no_of_rounds:0, no_of_
         let tSc = 0
         this.eventScoresList.forEach((score) => {
           if (score.round_no == i) {
-            d.push(score.points)
+            if(score.is_10_x) {
+              d.push("10X")
+            }
+            else {
+              d.push(score.points)
+            }
             tSc += score.points
           }
         })
@@ -199,12 +204,19 @@ event = {id: 0, event_category: {id: 0, name:0},name: "", no_of_rounds:0, no_of_
       let head2 = [header2]
       let d2 = []
       this.eventScoresList.forEach((score) => {
+         if (score.is_10_x) {
+          if (!d2[11]) {
+            d2[11] = 0
+          }
+          d2[11] +=1
+
+         } else {
           if (!d2[score.points]) {
             d2[score.points] = 0
           }
           d2[score.points] +=1
+        }
       })
-      d2[11] = 0
       let data2 = [d2]
       autoTable(doc, {
         styles: { halign: 'center' },

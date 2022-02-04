@@ -375,6 +375,26 @@
           </ion-col>
           <ion-col>
             <div>
+              <strong>Club Name</strong>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <strong>Archery Years</strong>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <strong>Date of Birth</strong>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <strong>Gender</strong>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
               <strong>Bring Bow</strong>
             </div>
           </ion-col>
@@ -412,6 +432,26 @@
           <ion-col>
             <div>
               {{enrollMent.event_category.name}}
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              {{enrollMent.profile.club_name || ""}}
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              {{enrollMent.profile.archery_years || ""}}
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              {{enrollMent.profile.dob || ""}}
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              {{enrollMent.profile.gender || ""}}
             </div>
           </ion-col>
           <ion-col>

@@ -35,7 +35,7 @@ export class JudgeeventPage implements OnInit {
   current_user_id = 0
   round_no = 0
 
-  currentScore = {arrow_no:0, id: 0, points:0, index: 0}
+  currentScore = {arrow_no:0, id: 0, points:0, index: 0, is_10_x: false}
   selectedBoard = {board_no: 0 , event: {no_of_rounds: 0} }
   
   event_id=0
@@ -284,6 +284,11 @@ export class JudgeeventPage implements OnInit {
       }, 3000)
     }
     Scorepoints(point) {
+      if (point == 10.1 || point == "10.1") {
+        this.eventScores[this.currentScore.index].is_10_x = true 
+        this.currentScore.is_10_x = true
+        point = 10
+      }
       this.eventScores[this.currentScore.index].points = point 
       this.currentScore.points = point
     }
@@ -352,7 +357,7 @@ export class JudgeeventPage implements OnInit {
       this.arrow_no = 0
       this.round_no = 0
       this.eventScores = []
-      this.currentScore = {arrow_no:0, id: 0, points:0, index:0}
+      this.currentScore = {arrow_no:0, id: 0, points:0, index:0, is_10_x:false}
       this.round_in_comp =  Array(this.selectedBoard.event.no_of_rounds).fill(1).map((x,i)=>i + 1)
     }
   
