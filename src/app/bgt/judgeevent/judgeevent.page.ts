@@ -268,7 +268,7 @@ export class JudgeeventPage implements OnInit {
         return
       }
       this.eventScores.forEach((sc) => {
-        this.apiservice.markScore({points: sc.points, board_judge_id: this.judge_id, approval_from: "Opponent"}, sc.id).then(res => {
+        this.apiservice.markScore({points: sc.points, is_10_x: sc.is_10_x, board_judge_id: this.judge_id, approval_from: "Opponent"}, sc.id).then(res => {
           if (!!res["status"] && res["status"]) {
            } 
     
@@ -291,6 +291,7 @@ export class JudgeeventPage implements OnInit {
       }
       this.eventScores[this.currentScore.index].points = point 
       this.currentScore.points = point
+      console.log(this.eventScores[this.currentScore.index])
     }
 
     saveSession() {
